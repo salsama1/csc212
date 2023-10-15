@@ -5,7 +5,7 @@ public linkedlist<Contact> LinkListConatact;
 public linkedlist<Event> LinkListEvent;
 //int emailcount;
 //int adresscount;
-// int birthcount;
+//int birthcount;
 public Scanner input=new Scanner(System.in); //check
 
 public phonebook() {
@@ -15,7 +15,7 @@ public phonebook() {
 
 
 
-public void searchcontact(phonebook pbb) {
+public void searchcontact() {
 	String select; // new integer for switch
 	int run = 0;
 	 while(run != 1)  {
@@ -34,7 +34,7 @@ public void searchcontact(phonebook pbb) {
 			String currentname =  input.nextLine();
 			System.out.print("1");
 			run = 1;
-			Contact contname =  pbb.searcbyname(currentname);
+			Contact contname =  searcbyname(currentname);
 			if(contname != null) {
 				System.out.println("Contact found!");
 				System.out.println(contname.toString());
@@ -47,7 +47,7 @@ public void searchcontact(phonebook pbb) {
 			String currentphone =  input.nextLine();
 			System.out.print("2");
 			run = 1;
-			Contact contphone = pbb.searchbyphone(currentphone);
+			Contact contphone = searchbyphone(currentphone);
 			if(contphone != null) {
 				System.out.println("Contact found!");
 				System.out.println(contphone.toString());
@@ -60,16 +60,16 @@ public void searchcontact(phonebook pbb) {
 			String currentemail =  input.nextLine();
 			System.out.print("3");
 			run = 1;
-			phonebook tmpbookemail = new phonebook();
-			tmpbookemail.LinkListConatact = pbb.searchbyeamil(currentemail);
-			if(tmpbookemail.LinkListConatact != null) {
+			phonebook tmookemail = new phonebook();
+			tmookemail.LinkListConatact = searchbyeamil(currentemail);
+			if(tmookemail.LinkListConatact != null) {
 				System.out.println("Contacts found!");
-				while(!tmpbookemail.LinkListConatact.last()) {
-					System.out.println(tmpbookemail.LinkListConatact.retreive().toString());
-					tmpbookemail.LinkListConatact.findnext();
+				while(!tmookemail.LinkListConatact.last()) {
+					System.out.println(tmookemail.LinkListConatact.retreive().toString());
+					tmookemail.LinkListConatact.findnext();
 					//emailcount--;
 				}
-				System.out.println(tmpbookemail.LinkListConatact.retreive().toString());
+				System.out.println(tmookemail.LinkListConatact.retreive().toString());
 			}
 			else
 				System.out.print("cant find contact");
@@ -79,16 +79,16 @@ public void searchcontact(phonebook pbb) {
 		System.out.print("4");
 		String currentadress =  input.nextLine();
 		run = 1;
-		phonebook tmpbookadress = new phonebook();
-		tmpbookadress.LinkListConatact = pbb.searchbyAdress(currentadress);
-		if(tmpbookadress.LinkListConatact != null) {
+		phonebook tmookadress = new phonebook();
+		tmookadress.LinkListConatact = searchbyAdress(currentadress);
+		if(tmookadress.LinkListConatact != null) {
 			System.out.println("Contacts found!");
-			while(!tmpbookadress.LinkListConatact.last()) {
-				System.out.println(tmpbookadress.LinkListConatact.retreive().toString());
-				tmpbookadress.LinkListConatact.findnext();
+			while(!tmookadress.LinkListConatact.last()) {
+				System.out.println(tmookadress.LinkListConatact.retreive().toString());
+				tmookadress.LinkListConatact.findnext();
 				//adresscount--;
 			}
-			System.out.println(tmpbookadress.LinkListConatact.retreive().toString());
+			System.out.println(tmookadress.LinkListConatact.retreive().toString());
 		}
 		else
 			System.out.print("cant find contact");
@@ -99,17 +99,17 @@ public void searchcontact(phonebook pbb) {
 		String currentbirth =  input.nextLine();
 		System.out.println(currentbirth);
 		run = 1;
-		phonebook tmpbookbirth = new phonebook();
-		tmpbookbirth.LinkListConatact = pbb.searchbyBirthday(currentbirth);
+		phonebook tmookbirth = new phonebook();
+		tmookbirth.LinkListConatact = searchbyBirthday(currentbirth);
 		//System.out.println(birthcount);
-		if(tmpbookbirth.LinkListConatact != null) {
+		if(tmookbirth.LinkListConatact != null) {
 			System.out.println("Contacts found!");
-			while(!tmpbookbirth.LinkListConatact.last()) {
-				System.out.println(tmpbookbirth.LinkListConatact.retreive().toString());
-				tmpbookbirth.LinkListConatact.findnext();
+			while(!tmookbirth.LinkListConatact.last()) {
+				System.out.println(tmookbirth.LinkListConatact.retreive().toString());
+				tmookbirth.LinkListConatact.findnext();
 				//birthcount--;
 			}
-			System.out.println(tmpbookbirth.LinkListConatact.retreive().toString());
+			System.out.println(tmookbirth.LinkListConatact.retreive().toString());
 		}
 		else
 			System.out.print("cant find contact");
@@ -124,7 +124,7 @@ public void searchcontact(phonebook pbb) {
 public void menu() {
 	String select;
 	int run = 0;
-	phonebook pb = new phonebook();
+	//phonebook  = new phonebook();
 	do {
 		System.out.println("Welcome to the Linked Tree Phonebook!\r\n"
 				+ "Please choose an option:\r\n"
@@ -141,42 +141,62 @@ public void menu() {
 
 		
 		switch(select) {
-		case "1": Contact addcontacts = addcontact(pb);
+		case "1": Contact addcontacts = addcontact();
 			if(addcontacts != null) 
-			pb.LinkListConatact.InsertC(addcontacts);
+			LinkListConatact.InsertC(addcontacts);
 			
 			//addcontact();
 			break;
 			
-		case "2": searchcontact(pb);
+		case "2": searchcontact();
 		
 			break;
 			
 		case "3": 
 			input.nextLine();  // Consume newline 
-			if(pb.LinkListConatact.empty()) {
+			if(LinkListConatact.empty()) {
 				System.out.println("contact list is empty");
 				break;
 			}
 			System.out.println("name of contact");
 			String tmpname = input.nextLine();
 			
-			Contact tmpcontact = pb.searcbyname(tmpname);
+			Contact tmpcontact = searcbyname(tmpname);
 			
 			if (tmpcontact != null) {
-				pb.delete(tmpcontact);
+				delete(tmpcontact);
+				deleteevent(tmpcontact.getContactName());
 				System.out.println("contacts deleted");
 			}
 			else 
 				System.out.println("contact doesnt exist");
 			break;
 			
-		case "4": Event addevent = addevent(pb);
-		if(addevent != null)
-			pb.LinkListEvent.InsertE(addevent);
+		case "4": 
+			addevent();
 			break;
 			
-		case "5":
+		case "5": 
+			System.out.println("Enter search criteria: ");
+			System.out.println("1. contact name");
+			System.out.println("2. Event tittle");
+			System.out.println("Enter your choice: ");
+
+			int choice = input.nextInt();
+			if(choice == 1) {
+				System.out.println("Enter the contact name: ");
+
+			}
+			else if(choice == 2)
+				System.out.println("Enter the event title: ");
+			else {
+				System.out.println("wrong number ");
+				return;
+			}
+			input.nextLine(); // consumes
+			String name =input.nextLine();
+
+			print_events(name, choice);
 			break;
 			
 		case "6": 
@@ -188,20 +208,10 @@ public void menu() {
 				System.out.println("no name was entered");
 			
 			else
-				pb.print_first(tmpfirst);
+				print_first(tmpfirst);
 			break;
 			
-		case "7": pb.LinkListEvent.findfirst();
-			if(pb.LinkListEvent.empty()) {
-				System.out.print("no events");
-			}
-			else {
-				while(!pb.LinkListEvent.last()) {
-					System.out.print(pb.LinkListEvent.retreive().toString());
-					pb.LinkListEvent.findnext();
-				}
-				System.out.print(pb.LinkListEvent.retreive().toString());
-			}
+		case "7": print_events_alpha();
 			break;
 			
 		case "8":
@@ -233,18 +243,18 @@ public void menu() {
 //}
 //}
 
-public Contact addcontact(phonebook pb) {
+public Contact addcontact( ) {
 	//int truth = 0;
 	input.nextLine();
 	System.out.println("enter the contact name");
 	String contname = input.nextLine();
-	if(pb.searcbyname(contname)!=null) {
+	if(searcbyname(contname)!=null) {
 		 System.out.println("there is contact that have same name");
 		 return null;
 	}
 	System.out.println("enter the contact phone number");
 	String contphone = input.nextLine();
-	if(pb.searchbyphone(contphone)!=null) {
+	if(searchbyphone(contphone)!=null) {
 		 System.out.println("there is contact that have same phonenumber");
 		 return null;
 	}
@@ -388,6 +398,10 @@ public void delete(Contact contact_to_delete) {
 	}
 	
 	
+	
+}
+
+public void deleteevent(String contact_to_delete) {
 	if(LinkListEvent.empty()) { // no events to delete
 		return;
 	}
@@ -395,50 +409,49 @@ public void delete(Contact contact_to_delete) {
 	LinkListEvent.findfirst();
 	
 	while(!LinkListEvent.last()) { // events to delete
-		if(LinkListEvent.retreive().getContactinvolved().equals(contact_to_delete.getContactName())) {
+		if(LinkListEvent.retreive().getContactinvolved().getContactName().equals(contact_to_delete)) {
 			LinkListEvent.remove();
 		}
 		
 		LinkListEvent.findnext();
 	}
-	if(LinkListEvent.retreive().getContactinvolved().equals(contact_to_delete.getContactName()))
+	if(LinkListEvent.retreive().getContactinvolved().getContactName().equals(contact_to_delete))
 		LinkListEvent.remove();
-	
 }
 
-public Event addevent(phonebook pbb) {
+
+public void addevent() {
 	input.nextLine();
 	System.out.println("enter event title");
 	String title = 	input.nextLine();
 	
-	if(pbb.searchevent(title)) {
+	if(searchevent(title)) {
 		System.out.print("Event title exists");
-		return null;
+		return;
 	}
 	
 	else {
 		System.out.print("Enter contact's name");
 		String cname = 	input.nextLine();
 		System.out.println(cname);
-		Contact cc = pbb.searcbyname(cname);
+		Contact cc = searcbyname(cname);
 		if(cc == null) {
 			System.out.println(cc == null);
 			System.out.print("no contact found with this name");
-			return null;
+			return;
 		}
 		else {
 			System.out.println("Enter event date and time (MM/DD/YYYY HH:MM):");
 			String date_time = 	input.nextLine();
-			if(pbb.searchdate_time(date_time)) {
+			if(searchdate_time(date_time)) {
 				System.out.print("date and time title exists");
-				return null;
+				return ;
 			}
 			
 			System.out.println("Enter event location:");
 			String location = 	input.nextLine();
-			Event e= new Event(title,date_time,location,pbb.searcbyname(cname));
+			Event e= new Event(title,date_time,location,searcbyname(cname));
 			LinkListEvent.InsertE(e);
-			return e;
 		}
 
 
@@ -487,6 +500,40 @@ if(LinkListEvent.retreive().getDate_Time().equalsIgnoreCase(Date_Time)) // for l
 
 return false;
 
+}
+
+public void print_events(String t, int x) {
+	if(LinkListEvent.empty()) {
+		System.out.print("event is empty");
+		return;
+	}
+	if(x == 1) {
+		LinkListEvent.findfirst();
+		while(!LinkListEvent.last()) {
+			if(LinkListEvent.retreive().getContactinvolved().getContactName().equalsIgnoreCase(t)) {
+				System.out.println(LinkListEvent.retreive().toString());
+			}
+			LinkListEvent.findnext();
+		}
+		
+		if(LinkListEvent.retreive().getContactinvolved().getContactName().equalsIgnoreCase(t)) 
+			System.out.println(LinkListEvent.retreive().toString());
+				
+	}
+	else {
+		LinkListEvent.findfirst();
+		while(!LinkListEvent.last()) {
+			if(LinkListEvent.retreive().getTitle().equalsIgnoreCase(t)) {
+				System.out.println(LinkListEvent.retreive().toString());
+			}
+			LinkListEvent.findnext();
+		}
+		
+		if(LinkListEvent.retreive().getTitle().equalsIgnoreCase(t)) 
+			System.out.println(LinkListEvent.retreive().toString());
+		
+	}
+	
 }
 
 
@@ -539,9 +586,19 @@ public void print_first(String first_name) {
 	}
 }
 	
-	public void print_events() {
+	public void print_events_alpha() {
 		
-		
+		LinkListEvent.findfirst();
+		if(LinkListEvent.empty()) {
+			System.out.print("no events");
+		}
+		else {
+			while(!LinkListEvent.last()) {
+				System.out.print(LinkListEvent.retreive().toString());
+				LinkListEvent.findnext();
+			}
+			System.out.print(LinkListEvent.retreive().toString());
+		}
 		
 		
 	}
