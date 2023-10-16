@@ -24,8 +24,7 @@ public void searchcontact() {
 			+ "3. Email Address\r\n"
 			+ "4. Address\r\n"
 			+ "5. Birthday");
-	select = input.next();
-	input.nextLine();  // Consume newline 
+	select = input.nextLine();
 	switch(select) {
 		case "1": System.out.println("enter contact's name");    //finished case 1 for name
 			String currentname =  input.nextLine();
@@ -129,10 +128,10 @@ public void menu() {
 				+ "5. Print event details\r\n"
 				+ "6. Print contacts by first name\r\n"
 				+ "7. Print all events alphabetically\r\n"
-				+ "8. Exit\r\n");
+				+ "8. Exit\r\n"
+				+ "Enter your choice:");
 		 
-		select=input.next();
-		input.nextLine();  // Consume newline 
+		select=input.nextLine();
 
 		switch(select) {
 		case "1": Contact addcontacts = addcontact();
@@ -172,21 +171,23 @@ public void menu() {
 			System.out.println("1. contact name");
 			System.out.println("2. Event tittle");
 			System.out.println("Enter your choice: ");
-
-			int choice = input.nextInt();
-			if(choice == 1) {
+			int number_choice = 0;
+			String choice = input.nextLine();
+			if(choice.equals("1") ) {
 				System.out.println("Enter the contact name: ");
-
+				number_choice = 1;
 			}
-			else if(choice == 2)
+			else if(choice.equals("2")) {
 				System.out.println("Enter the event title: ");
+				number_choice = 2;
+			}
 			else {
-				System.out.println("wrong number ");
+				System.out.println("wrong choice ");
 				return;
 			}
 			String name =input.nextLine();
 
-			print_events(name, choice);
+			print_events(name, number_choice);
 			break;
 			
 		case "6": 
@@ -414,8 +415,8 @@ public void addevent() {
 
 	}
 	
-	
 }
+
 
 public boolean searchevent(String title) {
 	
@@ -567,10 +568,10 @@ public void print_first(String first_name) {
 		LinkListConatact.findfirst();
 
 			while(!LinkListConatact.last()) {
-				System.out.print(LinkListConatact.retreive().toString());
+				System.out.println(LinkListConatact.retreive().toString());
 				LinkListConatact.findnext();
 			}
-			System.out.print(LinkListConatact.retreive().toString());
+			System.out.println(LinkListConatact.retreive().toString());
 	}
 
 }
