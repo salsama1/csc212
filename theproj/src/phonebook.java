@@ -550,7 +550,11 @@ public void print_first(String first_name) {
 		
 		LinkListConatact.findnext();
 	}
+	
 	if(extractfirst(LinkListConatact.retreive().getContactName()).equalsIgnoreCase(first_name)) {
+		if(found == 0) { // this if is used so the print will work only once
+			System.out.println("Contacts found!");
+		}
 		System.out.println(LinkListConatact.retreive().toString());
 		found = 1;
 	}
