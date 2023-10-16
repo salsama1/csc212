@@ -23,10 +23,11 @@ public void searchcontact() {
 			+ "2. Phone Number\r\n"
 			+ "3. Email Address\r\n"
 			+ "4. Address\r\n"
-			+ "5. Birthday");
+			+ "5. Birthday\r\n"
+			+ "Enter your choice: ");
 	select = input.nextLine();
 	switch(select) {
-		case "1": System.out.println("enter contact's name");    //finished case 1 for name
+		case "1": System.out.print("enter contact's name: ");    //finished case 1 for name
 			String currentname =  input.nextLine();
 			run = 1;
 			Contact contname =  searcbyname(currentname);
@@ -118,9 +119,10 @@ public void searchcontact() {
 public void menu() {
 	String select;
 	int run = 0;
+	System.out.println("Welcome to the Linked Tree Phonebook!");
 	do {
-		System.out.print("Welcome to the Linked Tree Phonebook!\r\n"
-				+ "Please choose an option:\r\n"
+		System.out.print(
+				"Please choose an option:\r\n"
 				+ "1. Add a contact\r\n"
 				+ "2. Search for a contact\r\n"
 				+ "3. Delete a contact\r\n"
@@ -129,14 +131,16 @@ public void menu() {
 				+ "6. Print contacts by first name\r\n"
 				+ "7. Print all events alphabetically\r\n"
 				+ "8. Exit\r\n"
-				+ "Enter your choice:");
+				+ "Enter your choice: ");
 		 
 		select=input.nextLine();
 
 		switch(select) {
 		case "1": Contact addcontacts = addcontact();
-			if(addcontacts != null) 
-			LinkListConatact.Insert(addcontacts);
+			if(addcontacts != null) {
+				LinkListConatact.Insert(addcontacts);
+				System.out.println("Contact added successfully!");
+			}
 			
 			break;
 			
@@ -170,15 +174,15 @@ public void menu() {
 			System.out.println("Enter search criteria: ");
 			System.out.println("1. contact name");
 			System.out.println("2. Event tittle");
-			System.out.println("Enter your choice: ");
+			System.out.print("Enter your choice: ");
 			int number_choice = 0;
 			String choice = input.nextLine();
 			if(choice.equals("1") ) {
-				System.out.println("Enter the contact name: ");
+				System.out.print("Enter the contact name: ");
 				number_choice = 1;
 			}
 			else if(choice.equals("2")) {
-				System.out.println("Enter the event title: ");
+				System.out.print("Enter the event title: ");
 				number_choice = 2;
 			}
 			else {
@@ -191,7 +195,11 @@ public void menu() {
 			break;
 			
 		case "6": 
-			System.out.println("Enter the first name:");
+			if(LinkListConatact.empty()) {
+				System.out.println("contact list is empty");
+				break;
+			}
+			System.out.print("Enter the first name: ");
 			String tmpfirst = input.nextLine();
 			
 			if(tmpfirst == null) 
@@ -218,26 +226,26 @@ public void menu() {
 	
 
 public Contact addcontact( ) {
-	System.out.println("enter the contact name");
+	System.out.print("enter the contact name: ");
 	String contname = input.nextLine();
 	if(searcbyname(contname)!=null) {
 		 System.out.println("there is contact that have same name");
 		 return null;
 	}
-	System.out.println("enter the contact phone number");
+	System.out.print("enter the contact phone number: ");
 	String contphone = input.nextLine();
 	if(searchbyphone(contphone)!=null) {
 		 System.out.println("there is contact that have same phonenumber");
 		 return null;
 	}
 	
-	System.out.println("enter the contact email address");
+	System.out.print("enter the contact email address: ");
 	String contemail = input.nextLine();
-	System.out.println("enter the contact addresss");
+	System.out.print("enter the contact addresss: ");
 	String contaddress = input.nextLine();
-	System.out.println("enter the contact birthday");
+	System.out.print("enter the contact birthday: ");
 	String contbirth = input.nextLine();
-	System.out.println("enter the contact notes for contact");
+	System.out.print("enter the contact notes for contact: ");
 	String contnote = input.nextLine();
 	
 	Contact c=new Contact(contname,contphone,contemail,contaddress,contbirth,contnote);
@@ -382,16 +390,16 @@ public void delete_event(String contact_to_delete) {
 
 
 public void addevent() {
-	System.out.println("enter event title");
+	System.out.print("enter event title: ");
 	String title = 	input.nextLine();
 	
 	if(searchevent(title)) {
-		System.out.println("Event title exists");
+		System.out.println("Event title exists: ");
 		return;
 	}
 	
 	else {
-		System.out.print("Enter contact's name");
+		System.out.print("Enter contact's name: ");
 		String cname = 	input.nextLine();
 		Contact cc = searcbyname(cname);
 		if(cc == null) {
@@ -399,17 +407,18 @@ public void addevent() {
 			return;
 		}
 		else {
-			System.out.println("Enter event date and time (MM/DD/YYYY HH:MM):");
+			System.out.print("Enter event date and time (MM/DD/YYYY HH:MM): ");
 			String date_time = 	input.nextLine();
 			if(searchdate_time(date_time)) {
 				System.out.println("date and time title exists");
 				return ;
 			}
 			
-			System.out.println("Enter event location:");
+			System.out.print("Enter event location: ");
 			String location = 	input.nextLine();
 			Event e= new Event(title,date_time,location,searcbyname(cname));
 			LinkListEvent.Insert(e);
+			System.out.println("Event scheduled successfully! ");
 		}
 
 
@@ -461,6 +470,8 @@ return false;
 }
 
 public void print_events(String t, int x) {
+	int found = 0;
+
 	if(LinkListEvent.empty()) {
 		System.out.print("event is empty");
 		return;
@@ -469,27 +480,36 @@ public void print_events(String t, int x) {
 		LinkListEvent.findfirst();
 		while(!LinkListEvent.last()) {
 			if(LinkListEvent.retreive().getContactinvolved().getContactName().equalsIgnoreCase(t)) {
-				System.out.println(LinkListEvent.retreive().toString());
+				System.out.println("Events found!\r\n" + LinkListEvent.retreive().toString());
+				found = 1;
 			}
 			LinkListEvent.findnext();
 		}
 		
-		if(LinkListEvent.retreive().getContactinvolved().getContactName().equalsIgnoreCase(t)) 
-			System.out.println(LinkListEvent.retreive().toString());
-				
+		if(LinkListEvent.retreive().getContactinvolved().getContactName().equalsIgnoreCase(t)) { 
+			System.out.println("Events found!\r\n" + LinkListEvent.retreive().toString());
+			found = 1;
+		}
+		if(found == 0)
+			System.out.println("no matching event found");
 	}
+	
 	else {
 		LinkListEvent.findfirst();
 		while(!LinkListEvent.last()) {
 			if(LinkListEvent.retreive().getTitle().equalsIgnoreCase(t)) {
-				System.out.println(LinkListEvent.retreive().toString());
+				System.out.println("Event found!\r\n" + LinkListEvent.retreive().toString());
+				found = 1;
 			}
 			LinkListEvent.findnext();
 		}
 		
-		if(LinkListEvent.retreive().getTitle().equalsIgnoreCase(t)) 
-			System.out.println(LinkListEvent.retreive().toString());
-		
+		if(LinkListEvent.retreive().getTitle().equalsIgnoreCase(t)) {
+			System.out.println("Event found!\r\n" + LinkListEvent.retreive().toString());
+			found = 1;
+		}
+		if(found == 0)
+			System.out.println("no matching events found");
 	}
 	
 }
@@ -516,31 +536,27 @@ public String extractfirst(String fullname) { // this method is to extract each 
 
 public void print_first(String first_name) {
 	int found = 0;
-	if(LinkListConatact.empty()) { // check if empty
-		System.out.println("no contacts are in");
-		return;
-	}
 	
 	LinkListConatact.findfirst();
 	while(!LinkListConatact.last()) {
 		
 		if(extractfirst(LinkListConatact.retreive().getContactName()).equalsIgnoreCase(first_name)) {
 			if(found == 0) { // this if is used so the print will work only once
-				System.out.println("Contacts found!1");
+				System.out.println("Contacts found!");
 			}
 			System.out.println(LinkListConatact.retreive().toString());
-			found++;
+			found = 1;
 		}
 		
 		LinkListConatact.findnext();
 	}
 	if(extractfirst(LinkListConatact.retreive().getContactName()).equalsIgnoreCase(first_name)) {
 		System.out.println(LinkListConatact.retreive().toString());
-		found++;
+		found = 1;
 	}
 	
 	if(found == 0) { // if found = 0 then there is no matching first name
-		System.out.println("Contacts not found!2");
+		System.out.println("Contacts not found!");
 	}
 }
 	
@@ -555,7 +571,7 @@ public void print_first(String first_name) {
 				System.out.println(LinkListEvent.retreive().toString());
 				LinkListEvent.findnext();
 			}
-			System.out.print(LinkListEvent.retreive().toString());
+			System.out.println(LinkListEvent.retreive().toString());
 		}
 			
 	}
