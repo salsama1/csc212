@@ -70,8 +70,8 @@ public void setPhoneNumber(String phoneNumber) {
 
 @Override // made to string method here
 public String toString() {
-	return "Name:" + ContactName + "\n, PhoneNumber:" + PhoneNumber + "\n, EmailAddress:" + EmailAddress
-			+ "\n, Address:" + Address + "\n, Birthday:" + Birthday + "\n, Note:" + Note;
+	return "Name:" + ContactName + "\n PhoneNumber:" + PhoneNumber + "\n EmailAddress:" + EmailAddress
+			+ "\n Address:" + Address + "\n Birthday:" + Birthday + "\n Note:" + Note;
 }
  
 

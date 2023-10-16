@@ -1,5 +1,3 @@
-
-
 import java.util.*;
 public class phonebook {
 public linkedlist<Contact> LinkListConatact; 
@@ -121,9 +119,8 @@ public void searchcontact() {
 public void menu() {
 	String select;
 	int run = 0;
-	//phonebook  = new phonebook();
 	do {
-		System.out.println("Welcome to the Linked Tree Phonebook!\r\n"
+		System.out.print("Welcome to the Linked Tree Phonebook!\r\n"
 				+ "Please choose an option:\r\n"
 				+ "1. Add a contact\r\n"
 				+ "2. Search for a contact\r\n"
@@ -135,22 +132,19 @@ public void menu() {
 				+ "8. Exit\r\n");
 		 
 		select=input.next();
+		input.nextLine();  // Consume newline 
 
-		
 		switch(select) {
 		case "1": Contact addcontacts = addcontact();
 			if(addcontacts != null) 
 			LinkListConatact.Insert(addcontacts);
 			
-			//addcontact();
 			break;
 			
 		case "2": searchcontact();
-		
 			break;
 			
 		case "3": 
-			input.nextLine();  // Consume newline 
 			if(LinkListConatact.empty()) {
 				System.out.println("contact list is empty");
 				break;
@@ -162,7 +156,7 @@ public void menu() {
 			
 			if (tmpcontact != null) {
 				delete(tmpcontact);
-				deleteevent(tmpcontact.getContactName());
+				delete_event(tmpcontact.getContactName());
 				System.out.println("contacts deleted");
 			}
 			else 
@@ -190,7 +184,6 @@ public void menu() {
 				System.out.println("wrong number ");
 				return;
 			}
-			input.nextLine(); // consumes
 			String name =input.nextLine();
 
 			print_events(name, choice);
@@ -198,7 +191,6 @@ public void menu() {
 			
 		case "6": 
 			System.out.println("Enter the first name:");
-			input.nextLine();  // Consume newline 
 			String tmpfirst = input.nextLine();
 			
 			if(tmpfirst == null) 
@@ -206,6 +198,7 @@ public void menu() {
 			
 			else
 				print_first(tmpfirst);
+			
 			break;
 			
 		case "7": print_events_alpha();
@@ -223,26 +216,7 @@ public void menu() {
 	}
 	
 
-
-
-
-//public void printallcontact() {
-	//current=head;
-	//while(current!=null) {
-		//System.out.print(((Contact)current.data).getContactName());
-		//System.out.print(((Contact)current.data).getPhoneNumber());
-//	System.out.print(((Contact)current.data).getEmailAddress());
-//System.out.print(((Contact)current.data).getAddress());
-//System.out.print(((Contact)current.data).getBirthday());
-//System.out.println(((Contact)current.data).getNote());
-
-//current=current.next;
-//}
-//}
-
 public Contact addcontact( ) {
-	//int truth = 0;
-	input.nextLine();
 	System.out.println("enter the contact name");
 	String contname = input.nextLine();
 	if(searcbyname(contname)!=null) {
@@ -266,12 +240,13 @@ public Contact addcontact( ) {
 	String contnote = input.nextLine();
 	
 	Contact c=new Contact(contname,contphone,contemail,contaddress,contbirth,contnote);
-	//LinkListConatact.Insert(c);
 	return c;
 }
 
 public Contact searcbyname(String Searchdata) {// changed searchbyname to return Contact and to receive a string
-	
+	if(LinkListConatact.empty()) {
+		return null;
+	}
 	LinkListConatact.findfirst();	
 	while(!LinkListConatact.last()) {
 		if((LinkListConatact.retreive()).getContactName().equalsIgnoreCase(Searchdata))
@@ -287,7 +262,9 @@ public Contact searcbyname(String Searchdata) {// changed searchbyname to return
 
 
 public Contact searchbyphone(String Searchdata) { // changed searchbyphone to return Contact and to receive a int
-	
+	if(LinkListConatact.empty()) {
+		return null;
+	}
 	LinkListConatact.findfirst();
 	while(!LinkListConatact.last()) {
 		if((LinkListConatact.retreive()).getPhoneNumber().equals(Searchdata) )
@@ -302,7 +279,9 @@ public Contact searchbyphone(String Searchdata) { // changed searchbyphone to re
 }
 
 public linkedlist<Contact> searchbyeamil(String Searchdata) { // changed search by email to return a list
-	
+	if(LinkListConatact.empty()) {
+		return null;
+	}
 	linkedlist<Contact> emaillist = new linkedlist<>(); 
 	LinkListConatact.findfirst();
 	
@@ -323,7 +302,9 @@ public linkedlist<Contact> searchbyeamil(String Searchdata) { // changed search 
 
 
 public linkedlist<Contact> searchbyAdress(String Searchdata) {
-	
+	if(LinkListConatact.empty()) {
+		return null;
+	}
 	linkedlist<Contact> Adresslist = new linkedlist<>(); 
 	LinkListConatact.findfirst();
 
@@ -342,7 +323,9 @@ public linkedlist<Contact> searchbyAdress(String Searchdata) {
 }
 
 public linkedlist<Contact> searchbyBirthday(String Searchdata) {
-	
+	if(LinkListConatact.empty()) {
+		return null;
+	}
 	linkedlist<Contact> Birthlist = new linkedlist<>(); 
 	LinkListConatact.findfirst();
 
@@ -368,6 +351,7 @@ public void delete(Contact contact_to_delete) {
 		
 		if(LinkListConatact.retreive().compareTo(contact_to_delete) == 0) { 
 			LinkListConatact.remove();
+			return;
 		}
 		LinkListConatact.findnext();
 	}
@@ -380,7 +364,7 @@ public void delete(Contact contact_to_delete) {
 	
 }
 
-public void deleteevent(String contact_to_delete) {
+public void delete_event(String contact_to_delete) {
 	if(LinkListEvent.empty()) { // no events to delete
 		return;
 	}
@@ -578,8 +562,7 @@ public void print_first(String first_name) {
 			}
 			System.out.print(LinkListEvent.retreive().toString());
 		}
-		
-		
+			
 	}
 	
 	public void print_contacts() {

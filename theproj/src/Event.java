@@ -7,11 +7,7 @@ public class Event implements Comparable<Event>{
 	
 	
 	
-	@Override
-	public String toString() {
-		return "Event [Title=" + Title + ", Date_Time=" + Date_Time + ", Location=" + Location + ", Contactinvolved="
-				+ Contactinvolved + "]";
-	}
+	
 	public Event() {
 		
 	}
@@ -49,6 +45,12 @@ public class Event implements Comparable<Event>{
 	@Override
 	public int compareTo(Event o) {
 		return Title.compareTo(o.Title);
+	}
+	
+	@Override
+	public String toString() {
+		return "Event [Title=" + Title + ", Date_Time=" + Date_Time + ", Location=" + Location + ", Contactinvolved="
+				+ Contactinvolved + "]";
 	}
 	
 	

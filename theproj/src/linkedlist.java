@@ -28,10 +28,11 @@ public void update(T e) {
 
 @Override
 public void remove() {
-	Node<T> tmp=head;
 	if(head==current) {
 		head=head.next;
-	}else {
+	}
+	else {
+		Node<T> tmp=head;
 		while(tmp.next!=current) {
 			tmp=tmp.next;
 		}
@@ -54,13 +55,6 @@ public boolean last() {
 public boolean empty() {
 	return head==null;
 }
-@Override
-public boolean search(T e) { // make search please
-	// TODO Auto-generated method stub
-	return false;
-}
-
-
 
 public void Insert(T data) {
     Node<T> tmp=new Node<T>(data);
@@ -92,9 +86,5 @@ public void Insert(T data) {
         }return;
     }
 }
-
-
-
-
 
 }
