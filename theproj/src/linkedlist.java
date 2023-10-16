@@ -62,12 +62,13 @@ public boolean search(T e) { // make search please
 
 
 
-public void InsertE(Event data) {
-    Node<T> tmp=new Node(data);
+public void Insert(T data) {
+    Node<T> tmp=new Node<T>(data);
     if(head==null) {
         head=current=tmp;
-    return;}
-    if(((Event)tmp.getData()).compareTo(((Event)head.getData()))<0){
+    return;
+    }
+    if((tmp.getData()).compareTo((head.getData())) <0){
             tmp.setNext(head);
             head=tmp;
             return;
@@ -76,7 +77,7 @@ public void InsertE(Event data) {
         Node<T>pre=head;
         current=head.getNext();
         while(current!=null) {
-            if(((Event)tmp.getData()).compareTo(((Event)current.getData()))<0) {
+            if((tmp.getData()).compareTo((current.getData())) <0) {
             tmp.setNext(current);
             pre.setNext(tmp);
             current=tmp;
@@ -91,34 +92,7 @@ public void InsertE(Event data) {
         }return;
     }
 }
-public void InsertC(Contact data) {
-    Node<T> tmp=new Node(data);
-    if(head==null) {
-        head=current=tmp;
-        return;}
-    if(((Contact)tmp.getData()).compareTo(((Contact)head.getData()))>0){
-            tmp.setNext(head);
-            head=tmp;
-            return;
-            }
-    else {
-        Node<T>pre=head;
-        current=head.next;
-        while(current!=null) {
-            if(((Contact)tmp.getData()).compareTo(((Contact)current.getData()))>0) {
-            tmp.setNext(current);
-            pre.setNext(tmp);
-            current=tmp;return;}
-        pre=current;
-        current=current.next;
 
-        }
-        if(current==null) {//check
-            pre.setNext(tmp);
-            current=tmp;
-        }return;
-    }
-}
 
 
 

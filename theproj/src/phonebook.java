@@ -1,11 +1,9 @@
 
+
 import java.util.*;
 public class phonebook {
 public linkedlist<Contact> LinkListConatact; 
 public linkedlist<Event> LinkListEvent;
-//int emailcount;
-//int adresscount;
-//int birthcount;
 public Scanner input=new Scanner(System.in); //check
 
 public phonebook() {
@@ -14,27 +12,28 @@ public phonebook() {
 }
 
 
-
 public void searchcontact() {
-	String select; // new integer for switch
-	int run = 0;
-	 while(run != 1)  {
+	if(LinkListConatact.empty()) {
+		System.out.println("list empty");
+		return;
+	}
+	String select; // new String for switch
+	int run = 0; // when run is 0 it means the user didnt input the right choice
+	while(run != 1)  {
 	System.out.println("Enter search criteria:\r\n"
 			+ "1. Name\r\n"
 			+ "2. Phone Number\r\n"
 			+ "3. Email Address\r\n"
 			+ "4. Address\r\n"
 			+ "5. Birthday");
-	System.out.print("why");
 	select = input.next();
 	input.nextLine();  // Consume newline 
-	System.out.print(select);
 	switch(select) {
 		case "1": System.out.println("enter contact's name");    //finished case 1 for name
 			String currentname =  input.nextLine();
-			System.out.print("1");
 			run = 1;
 			Contact contname =  searcbyname(currentname);
+			
 			if(contname != null) {
 				System.out.println("Contact found!");
 				System.out.println(contname.toString());
@@ -45,9 +44,9 @@ public void searchcontact() {
 			
 		case "2": System.out.println("enter contact's phone"); // finished case 2 which is similar to case 1
 			String currentphone =  input.nextLine();
-			System.out.print("2");
 			run = 1;
 			Contact contphone = searchbyphone(currentphone);
+			
 			if(contphone != null) {
 				System.out.println("Contact found!");
 				System.out.println(contphone.toString());
@@ -58,18 +57,18 @@ public void searchcontact() {
 			
 		case "3": System.out.println("enter contact's email");
 			String currentemail =  input.nextLine();
-			System.out.print("3");
 			run = 1;
-			phonebook tmookemail = new phonebook();
-			tmookemail.LinkListConatact = searchbyeamil(currentemail);
-			if(tmookemail.LinkListConatact != null) {
+			linkedlist<Contact> elist= new linkedlist<>(); // elist is the list of contacts with similar emails
+			elist = searchbyeamil(currentemail);
+			
+			if(elist != null) {
 				System.out.println("Contacts found!");
-				while(!tmookemail.LinkListConatact.last()) {
-					System.out.println(tmookemail.LinkListConatact.retreive().toString());
-					tmookemail.LinkListConatact.findnext();
-					//emailcount--;
+				elist.findfirst();
+				while(!elist.last()) {
+					System.out.println(elist.retreive().toString());
+					elist.findnext();
 				}
-				System.out.println(tmookemail.LinkListConatact.retreive().toString());
+				System.out.println(elist.retreive().toString());
 			}
 			else
 				System.out.print("cant find contact");
@@ -79,16 +78,15 @@ public void searchcontact() {
 		System.out.print("4");
 		String currentadress =  input.nextLine();
 		run = 1;
-		phonebook tmookadress = new phonebook();
-		tmookadress.LinkListConatact = searchbyAdress(currentadress);
-		if(tmookadress.LinkListConatact != null) {
+		linkedlist<Contact> alist= new linkedlist<>();
+		alist = searchbyAdress(currentadress);
+		if(alist != null) {
 			System.out.println("Contacts found!");
-			while(!tmookadress.LinkListConatact.last()) {
-				System.out.println(tmookadress.LinkListConatact.retreive().toString());
-				tmookadress.LinkListConatact.findnext();
-				//adresscount--;
+			while(!alist.last()) {
+				System.out.println(alist.retreive().toString());
+				alist.findnext();
 			}
-			System.out.println(tmookadress.LinkListConatact.retreive().toString());
+			System.out.println(alist.retreive().toString());
 		}
 		else
 			System.out.print("cant find contact");
@@ -99,17 +97,16 @@ public void searchcontact() {
 		String currentbirth =  input.nextLine();
 		System.out.println(currentbirth);
 		run = 1;
-		phonebook tmookbirth = new phonebook();
-		tmookbirth.LinkListConatact = searchbyBirthday(currentbirth);
-		//System.out.println(birthcount);
-		if(tmookbirth.LinkListConatact != null) {
+		linkedlist<Contact> blist= new linkedlist<>();
+		
+		blist = searchbyBirthday(currentbirth);
+		if(blist != null) {
 			System.out.println("Contacts found!");
-			while(!tmookbirth.LinkListConatact.last()) {
-				System.out.println(tmookbirth.LinkListConatact.retreive().toString());
-				tmookbirth.LinkListConatact.findnext();
-				//birthcount--;
+			while(!blist.last()) {
+				System.out.println(blist.retreive().toString());
+				blist.findnext();
 			}
-			System.out.println(tmookbirth.LinkListConatact.retreive().toString());
+			System.out.println(blist.retreive().toString());
 		}
 		else
 			System.out.print("cant find contact");
@@ -143,7 +140,7 @@ public void menu() {
 		switch(select) {
 		case "1": Contact addcontacts = addcontact();
 			if(addcontacts != null) 
-			LinkListConatact.InsertC(addcontacts);
+			LinkListConatact.Insert(addcontacts);
 			
 			//addcontact();
 			break;
@@ -269,16 +266,13 @@ public Contact addcontact( ) {
 	String contnote = input.nextLine();
 	
 	Contact c=new Contact(contname,contphone,contemail,contaddress,contbirth,contnote);
-	//LinkListConatact.InsertC(c);
+	//LinkListConatact.Insert(c);
 	return c;
 }
 
 public Contact searcbyname(String Searchdata) {// changed searchbyname to return Contact and to receive a string
-	if(LinkListConatact.empty()) {
-		return null;
-	}
-	LinkListConatact.findfirst();
 	
+	LinkListConatact.findfirst();	
 	while(!LinkListConatact.last()) {
 		if((LinkListConatact.retreive()).getContactName().equalsIgnoreCase(Searchdata))
 			return LinkListConatact.retreive();
@@ -293,9 +287,7 @@ public Contact searcbyname(String Searchdata) {// changed searchbyname to return
 
 
 public Contact searchbyphone(String Searchdata) { // changed searchbyphone to return Contact and to receive a int
-	if(LinkListConatact.empty()) {
-		return null;
-	}
+	
 	LinkListConatact.findfirst();
 	while(!LinkListConatact.last()) {
 		if((LinkListConatact.retreive()).getPhoneNumber().equals(Searchdata) )
@@ -310,33 +302,27 @@ public Contact searchbyphone(String Searchdata) { // changed searchbyphone to re
 }
 
 public linkedlist<Contact> searchbyeamil(String Searchdata) { // changed search by email to return a list
-	if(LinkListConatact.empty()) {
-		return null;
-	}
+	
 	linkedlist<Contact> emaillist = new linkedlist<>(); 
 	LinkListConatact.findfirst();
 	
 	while(!LinkListConatact.last()) {
 		if(LinkListConatact.retreive().getEmailAddress().equalsIgnoreCase(Searchdata)) {
-			emaillist.InsertC(LinkListConatact.retreive());
-			//emailcount++;
+			emaillist.Insert(LinkListConatact.retreive());
 		}
 		
 			LinkListConatact.findnext();
 			}
 	
 	if((LinkListConatact.retreive()).getEmailAddress().equalsIgnoreCase(Searchdata)) { // for last case
-		emaillist.InsertC(LinkListConatact.retreive());
-		//emailcount++;
+		emaillist.Insert(LinkListConatact.retreive());
 	}
+	
 	return emaillist;
 }
 
 
 public linkedlist<Contact> searchbyAdress(String Searchdata) {
-	if(LinkListConatact.empty()) {
-		return null;
-	}
 	
 	linkedlist<Contact> Adresslist = new linkedlist<>(); 
 	LinkListConatact.findfirst();
@@ -344,23 +330,18 @@ public linkedlist<Contact> searchbyAdress(String Searchdata) {
 	
 	while(!LinkListConatact.last()) {
 		if((LinkListConatact.retreive()).getAddress().equalsIgnoreCase(Searchdata)) {
-			Adresslist.InsertC(LinkListConatact.retreive());
-			//Adresscount++;
+			Adresslist.Insert(LinkListConatact.retreive());
 		}
 		
 			LinkListConatact.findnext();
 			}
 	if((LinkListConatact.retreive()).getAddress().equalsIgnoreCase(Searchdata)) {
-		Adresslist.InsertC(LinkListConatact.retreive());
-		//Adresscount++;
+		Adresslist.Insert(LinkListConatact.retreive());
 	}
 	return Adresslist;
 }
 
 public linkedlist<Contact> searchbyBirthday(String Searchdata) {
-	if(LinkListConatact.empty()) {
-		return null;
-	}
 	
 	linkedlist<Contact> Birthlist = new linkedlist<>(); 
 	LinkListConatact.findfirst();
@@ -368,16 +349,14 @@ public linkedlist<Contact> searchbyBirthday(String Searchdata) {
 	
 	while(!LinkListConatact.last()) {
 		if((LinkListConatact.retreive()).getBirthday().equalsIgnoreCase(Searchdata)) {
-			Birthlist.InsertC(LinkListConatact.retreive());
-			//Birthcount++;
+			Birthlist.Insert(LinkListConatact.retreive());
 		}
 		
 			LinkListConatact.findnext();
 			}
 	
 	if((LinkListConatact.retreive()).getBirthday().equalsIgnoreCase(Searchdata)) {
-		Birthlist.InsertC(LinkListConatact.retreive());
-		//Birthcount++;
+		Birthlist.Insert(LinkListConatact.retreive());
 	}
 	return Birthlist;
 }
@@ -451,7 +430,7 @@ public void addevent() {
 			System.out.println("Enter event location:");
 			String location = 	input.nextLine();
 			Event e= new Event(title,date_time,location,searcbyname(cname));
-			LinkListEvent.InsertE(e);
+			LinkListEvent.Insert(e);
 		}
 
 
@@ -601,6 +580,20 @@ public void print_first(String first_name) {
 		}
 		
 		
+	}
+	
+	public void print_contacts() {
+		if(LinkListConatact.empty()) {
+			System.out.print("no contacts");
+			return;
+		}
+		LinkListConatact.findfirst();
+
+			while(!LinkListConatact.last()) {
+				System.out.print(LinkListConatact.retreive().toString());
+				LinkListConatact.findnext();
+			}
+			System.out.print(LinkListConatact.retreive().toString());
 	}
 
 }
