@@ -49,8 +49,8 @@ public class Event implements Comparable<Event>{
 	
 	@Override
 	public String toString() {
-		return "Event [Title=" + Title + ", Date_Time=" + Date_Time + ", Location=" + Location + ", Contactinvolved="
-				+ Contactinvolved + "]";
+		return "Event Title:" + Title + "\n Date_Time:" + Date_Time + "\n Location:" + Location + "\n Contactinvolved:"
+				+ Contactinvolved;
 	}
 	
 	

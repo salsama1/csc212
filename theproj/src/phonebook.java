@@ -204,7 +204,7 @@ public void menu() {
 		case "7": print_events_alpha();
 			break;
 			
-		case "8":
+		case "8": print_contacts();
 			run = 1;
 			break;
 			
@@ -381,30 +381,27 @@ public void delete_event(String contact_to_delete) {
 
 
 public void addevent() {
-	input.nextLine();
 	System.out.println("enter event title");
 	String title = 	input.nextLine();
 	
 	if(searchevent(title)) {
-		System.out.print("Event title exists");
+		System.out.println("Event title exists");
 		return;
 	}
 	
 	else {
 		System.out.print("Enter contact's name");
 		String cname = 	input.nextLine();
-		System.out.println(cname);
 		Contact cc = searcbyname(cname);
 		if(cc == null) {
-			System.out.println(cc == null);
-			System.out.print("no contact found with this name");
+			System.out.println("no contact found with this name");
 			return;
 		}
 		else {
 			System.out.println("Enter event date and time (MM/DD/YYYY HH:MM):");
 			String date_time = 	input.nextLine();
 			if(searchdate_time(date_time)) {
-				System.out.print("date and time title exists");
+				System.out.println("date and time title exists");
 				return ;
 			}
 			
@@ -554,7 +551,7 @@ public void print_first(String first_name) {
 		}
 		else {
 			while(!LinkListEvent.last()) {
-				System.out.print(LinkListEvent.retreive().toString());
+				System.out.println(LinkListEvent.retreive().toString());
 				LinkListEvent.findnext();
 			}
 			System.out.print(LinkListEvent.retreive().toString());
