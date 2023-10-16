@@ -348,20 +348,17 @@ public void delete(Contact contact_to_delete) {
 	LinkListConatact.findfirst();
 	
 	while(!LinkListConatact.last()) {
-		
-		if(LinkListConatact.retreive().compareTo(contact_to_delete) == 0) { 
+		if(LinkListConatact.retreive().getContactName().equalsIgnoreCase(contact_to_delete.getContactName())) { 
 			LinkListConatact.remove();
-			return;
 		}
-		LinkListConatact.findnext();
+		else
+			LinkListConatact.findnext();
 	}
 	
-	if(LinkListConatact.retreive().compareTo(contact_to_delete) == 0) {
+	if(LinkListConatact.retreive().getContactName().equalsIgnoreCase(contact_to_delete.getContactName())) {
 		LinkListConatact.remove();
 	}
-	
-	
-	
+		
 }
 
 public void delete_event(String contact_to_delete) {
@@ -375,8 +372,8 @@ public void delete_event(String contact_to_delete) {
 		if(LinkListEvent.retreive().getContactinvolved().getContactName().equals(contact_to_delete)) {
 			LinkListEvent.remove();
 		}
-		
-		LinkListEvent.findnext();
+		else
+			LinkListEvent.findnext();
 	}
 	if(LinkListEvent.retreive().getContactinvolved().getContactName().equals(contact_to_delete))
 		LinkListEvent.remove();
