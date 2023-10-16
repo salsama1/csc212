@@ -213,7 +213,7 @@ public void menu() {
 		case "7": print_events_alpha();
 			break;
 			
-		case "8": print_contacts();
+		case "8": //print_contacts();
 			run = 1;
 			break;
 			
@@ -535,28 +535,29 @@ public String extractfirst(String fullname) { // this method is to extract each 
 }
 
 public void print_first(String first_name) {
-	int found = 0;
+	int found = 0;//1
 	
-	LinkListConatact.findfirst();
-	while(!LinkListConatact.last()) {
+	LinkListConatact.findfirst();//1
+	
+	while(!LinkListConatact.last()) { //n
 		
-		if(extractfirst(LinkListConatact.retreive().getContactName()).equalsIgnoreCase(first_name)) {
-			if(found == 0) { // this if is used so the print will work only once
-				System.out.println("Contacts found!");
+		if(extractfirst(LinkListConatact.retreive().getContactName()).equalsIgnoreCase(first_name)) { 
+			if(found == 0) { // (n-1)
+				// this if is used so the print will work only once
+				System.out.println("Contacts found!");//1
+				found = 1;//1
 			}
-			System.out.println(LinkListConatact.retreive().toString());
-			found = 1;
+			System.out.println(LinkListConatact.retreive().toString()); // 3(n-1)
 		}
-		
-		LinkListConatact.findnext();
+		LinkListConatact.findnext(); //n-1
 	}
 	
 	if(extractfirst(LinkListConatact.retreive().getContactName()).equalsIgnoreCase(first_name)) {
 		if(found == 0) { // this if is used so the print will work only once
 			System.out.println("Contacts found!");
+			found = 1;
 		}
 		System.out.println(LinkListConatact.retreive().toString());
-		found = 1;
 	}
 	
 	if(found == 0) { // if found = 0 then there is no matching first name
@@ -566,32 +567,32 @@ public void print_first(String first_name) {
 	
 	public void print_events_alpha() {
 		
-		LinkListEvent.findfirst();
-		if(LinkListEvent.empty()) {
-			System.out.print("no events");
+		if(LinkListEvent.empty()) { //1
+			System.out.println("no events");//1
+			return;//1
 		}
-		else {
-			while(!LinkListEvent.last()) {
-				System.out.println(LinkListEvent.retreive().toString());
-				LinkListEvent.findnext();
+		LinkListEvent.findfirst(); //1
+		 
+			while(!LinkListEvent.last()) { // n times
+				System.out.println(LinkListEvent.retreive().toString()); //3(n-1)
+				LinkListEvent.findnext(); //n-1
 			}
-			System.out.println(LinkListEvent.retreive().toString());
-		}
-			
+			System.out.println(LinkListEvent.retreive().toString()); // 3
 	}
+	//total is = 
 	
-	public void print_contacts() {
-		if(LinkListConatact.empty()) {
-			System.out.print("no contacts");
-			return;
-		}
-		LinkListConatact.findfirst();
+	//public void print_contacts() {
+		//if(LinkListConatact.empty()) {
+			//System.out.print("no contacts");
+			//return;
+		//}
+		//LinkListConatact.findfirst();
 
-			while(!LinkListConatact.last()) {
-				System.out.println(LinkListConatact.retreive().toString());
-				LinkListConatact.findnext();
-			}
-			System.out.println(LinkListConatact.retreive().toString());
-	}
+			//while(!LinkListConatact.last()) {
+				//System.out.println(LinkListConatact.retreive().toString());
+				//LinkListConatact.findnext();
+			//}
+			//System.out.println(LinkListConatact.retreive().toString());
+	//}
 
 }

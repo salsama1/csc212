@@ -16,6 +16,7 @@ public int compareTo(Contact o) {
 	return ContactName.compareTo(o.ContactName);
 	
 }
+public Contact() {};
 
 public Contact(String contactName, String phoneNumber, String emailAddress, String address, String birthday, String note) {
 	ContactName = contactName;
@@ -25,9 +26,6 @@ public Contact(String contactName, String phoneNumber, String emailAddress, Stri
 	Birthday = birthday;
 	Note = note;
 }
-
-
-public Contact() {};
 
 
 
