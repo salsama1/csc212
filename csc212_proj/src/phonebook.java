@@ -1,18 +1,19 @@
 import java.util.*;
 public class phonebook {
-public linkedlist<Contact> LinkListConatact; 
+public BST ListConatact; 
 public linkedlist<Event> LinkListEvent;
+public linkedlist<Event> LinkListAppointment;
 public Scanner input=new Scanner(System.in); //check
 
 public phonebook() { // big o(1) total = 2
-	LinkListConatact = new linkedlist<>();//1
+	ListConatact = new BST();//1
 	LinkListEvent = new linkedlist<>();//1
 }
 
 
 public void searchcontact() 
 {//bigO(n)    total=5n+29   
-	if(LinkListConatact.empty()) {//1
+	if(ListConatact.empty()) {//1
 		System.out.println("list empty");//1
 		return;//1
 	}
@@ -26,11 +27,12 @@ public void searchcontact()
 			+ "5. Birthday\r\n"
 			+ "Enter your choice: ");//1
 	select = input.nextLine();//1
+	
 	switch(select) {//1
 		case "1": System.out.print("enter contact's name: ");//1           finished case 1 for name
 			String currentname =  input.nextLine();//1
 		
-			Contact contname =  searcbyname(currentname);//n
+			Contact contname = ListConatact.search_name(currentname);//n
 			
 			if(contname != null) {//1							// if we find the name we print the details else we break
 				System.out.println("Contact found!");//1
@@ -43,7 +45,7 @@ public void searchcontact()
 		case "2": System.out.print("enter contact's phone"); //1    finished case 2 which is similar to case 1
 			String currentphone =  input.nextLine();//1
 			
-			Contact contphone = searchbyphone(currentphone);//n
+			Contact contphone =  ListConatact.search_phone(currentphone);//n
 			
 			if(contphone != null) {//1							// same as case 1
 				System.out.println("Contact found!");//1
@@ -56,7 +58,7 @@ public void searchcontact()
 		case "3": System.out.println("enter contact's email");//1
 			String currentemail =  input.nextLine();//1
 			
-			 searchbyeamil(currentemail);//n
+			ListConatact.search_email(currentemail);//n
 			 
 			break;//1
 			
@@ -64,14 +66,14 @@ public void searchcontact()
 			System.out.println("enter contact's adress");//1
 		String currentadress =  input.nextLine();//1
 	
-		 searchbyAdress(currentadress);//n
+		ListConatact.search_address(currentadress);//n
 		
 			break;//1
 		case "5": //1
 		System.out.println("enter contact's birth");//1
 		String currentbirth =  input.nextLine();//1
 
-		searchbyBirthday(currentbirth);//n
+		ListConatact.search_birthday(currentbirth);//n
 		
 			break;//1
 		default://1
@@ -85,7 +87,7 @@ public void menu() //bigO(n^3)  total=N^3+3n^2+5n+60
 {
 	String select;//1
 	int run = 0;//1
-	System.out.println("Welcome to the Linked Tree Phonebook!");//1
+	System.out.println("Welcome to the BST Phonebook!");//1
 	do {
 		System.out.print(
 				"Please choose an option:\r\n"
@@ -105,8 +107,10 @@ public void menu() //bigO(n^3)  total=N^3+3n^2+5n+60
 		case "1"://1 
 			Contact addcontacts = addcontact();//n
 			if(addcontacts != null) {//1
-				LinkListConatact.Insert(addcontacts);//n
-				System.out.println("Contact added successfully!");//1
+				ListConatact.insert(addcontacts);//n
+					System.out.println("Contact added successfully!");//1
+		
+
 			}
 			
 			break;//1
@@ -115,7 +119,7 @@ public void menu() //bigO(n^3)  total=N^3+3n^2+5n+60
 			break;//1
 			
 		case "3": //1
-			if(LinkListConatact.empty()) //1
+			if(ListConatact.empty()) //1
 			{
 				System.out.println("contact list is empty");//1
 				break;//1
@@ -123,7 +127,7 @@ public void menu() //bigO(n^3)  total=N^3+3n^2+5n+60
 			System.out.println("name of contact");//1
 			String tmpname = input.nextLine();//1
 			
-			Contact tmpcontact = searcbyname(tmpname);//n
+			Contact tmpcontact = ListConatact.search_name(tmpname);//n
 			
 			if (tmpcontact != null)//1 
 			{
@@ -158,15 +162,15 @@ public void menu() //bigO(n^3)  total=N^3+3n^2+5n+60
 			else //1
 				{
 				System.out.println("wrong choice ");//1
-				return;//1
+				break;//1
+
 			}
 			String name =input.nextLine();//1
 
 			print_events(name, number_choice);//n
-			break;//1
 			
 		case "6": //1
-			if(LinkListConatact.empty()) //1
+			if(ListConatact.empty()) //1
 			{
 				System.out.println("contact list is empty");//1
 				break;//1
@@ -178,7 +182,7 @@ public void menu() //bigO(n^3)  total=N^3+3n^2+5n+60
 				System.out.println("no name was entered");//1
 			
 			else//1
-				print_first(tmpfirst);//n^2
+				ListConatact.search_firstname(tmpfirst);//n^2
 			
 			break;//1
 			
@@ -201,13 +205,13 @@ public void menu() //bigO(n^3)  total=N^3+3n^2+5n+60
 public Contact addcontact( ) {//bigO(n)    total=2n+18  
 	System.out.print("enter the contact name: ");//1
 	String contname = input.nextLine();//1
-	if(searcbyname(contname)!=null) {//n
+	if(ListConatact.search_name(contname)!=null) {//n
 		 System.out.println("there is contact that have same name");//1
 		 return null;//1
 	}
 	System.out.print("enter the contact phone number: ");//1
 	String contphone = input.nextLine();//1
-	if(searchbyphone(contphone)!=null) {//n
+	if(ListConatact.search_phone(contphone)!=null) {//n
 		 System.out.println("there is contact that have same phonenumber");//1
 		 return null;//1
 	}
@@ -226,145 +230,14 @@ public Contact addcontact( ) {//bigO(n)    total=2n+18
 	return c;//1
 }
 
-public Contact searcbyname(String Searchdata) {// big o(n) total = 3n+8 changed searchbyname to return Contact and to receive a string
-	if(LinkListConatact.empty()) {//1
-		return null;//1
-	}
-	LinkListConatact.findfirst();	//1
-	while(!LinkListConatact.last()) {//n+1
-		if((LinkListConatact.retreive()).getContactName().equalsIgnoreCase(Searchdata))//n
-			return LinkListConatact.retreive();//1
-		LinkListConatact.findnext();//n
-		}
-	
-	if(LinkListConatact.retreive().getContactName().equalsIgnoreCase(Searchdata)) //1       for last case
-		return LinkListConatact.retreive();//1
-	
-	return null;//1
-}
 
-
-public Contact searchbyphone(String Searchdata) { // big o(n) total = 3n+8 changed searchbyphone to return Contact and to receive a int
-	if(LinkListConatact.empty()) {//1
-		return null;//1
-	}
-	LinkListConatact.findfirst();//1
-	while(!LinkListConatact.last()) {//n+1
-		if((LinkListConatact.retreive()).getPhoneNumber().equals(Searchdata) )//n
-			return LinkListConatact.retreive();//1
-		LinkListConatact.findnext();//n
-		}
-	
-	if((LinkListConatact.retreive()).getPhoneNumber().equals(Searchdata) ) //1  for last case
-		return LinkListConatact.retreive();//1
-	
-	return null;//1
-}
-
-public void searchbyeamil(String Searchdata) { // big(n) 5n+10 changed search by email to return void
-	if(LinkListConatact.empty()) {//1
-		return;//1
-	}
-	
-	LinkListConatact.findfirst();//1
-	// x is for checking if we found one contact at least
-
-	int x=0;//1
-	while(!LinkListConatact.last()) {///n+1
-		if(LinkListConatact.retreive().getEmailAddress().equalsIgnoreCase(Searchdata)) {//n
-			System.out.println(LinkListConatact.retreive()) ;//n
-			 x=1;//n
-		}
-		
-			LinkListConatact.findnext();//n
-			}
-	
-	if((LinkListConatact.retreive()).getEmailAddress().equalsIgnoreCase(Searchdata)) { //1    for last case
-		System.out.println(LinkListConatact.retreive().toString()) ;//1
-		 x=1;//1
-	}
-	
-	if(x==0)//1
-		System.out.println("there is no email with this :"+Searchdata);//1
-	
-}
-
-
-public void searchbyAdress(String Searchdata) {//big(n)  5n+10
-	if(LinkListConatact.empty()) {//1
-		return ;//1
-	}
-	
-	LinkListConatact.findfirst();//1
-// x is for checking if we found one contact at least
-	int x=0;//1
-	while(!LinkListConatact.last()) {//n+1
-		if((LinkListConatact.retreive()).getAddress().equalsIgnoreCase(Searchdata)) {//n
-			System.out.println(LinkListConatact.retreive().toString()); //n
-			 x=1;//n
-		}
-		
-			LinkListConatact.findnext();//n
-			}
-	if((LinkListConatact.retreive()).getAddress().equalsIgnoreCase(Searchdata)) {//1
-		System.out.println(LinkListConatact.retreive().toString()) ;//1
-		 x=1;//1
-	}
-	if(x==0)//1
-		System.out.println("there is no address of this address :"+Searchdata);//1
-}
-
-public void searchbyBirthday(String Searchdata)//  bigO(n)   total=5n+10
-{
-	if(LinkListConatact.empty()) //1
-	{
-		 return ;//1
-	}
-	LinkListConatact.findfirst();//1
-
-	// x is for checking if we found one contact at least
-
-	int x=0;//1
-	
-	while(!LinkListConatact.last()) {//n+1
-		if((LinkListConatact.retreive()).getBirthday().equalsIgnoreCase(Searchdata)) {//n
-			
-			System.out.println(LinkListConatact.retreive().toString()) ;//n
-			 x=1;//n
-		}
-		
-			LinkListConatact.findnext();//n
-			}
-	
-	if((LinkListConatact.retreive()).getBirthday().equalsIgnoreCase(Searchdata)) {//1
-		System.out.println(LinkListConatact.retreive().toString());//1
-		x=1;//1
-	}
-	if(x==0)//1
-		System.out.println("there is no birthday of this :"+Searchdata);//1
-	
-}
 
 public void delete(Contact contact_to_delete){ //bigO(n^2)   n^2+5n+3 
 
 	//deletes contacts with the same name as user inputs
-	LinkListConatact.findfirst();//1
-	
-	while(!LinkListConatact.last()) //n+1
-	{
-		if(LinkListConatact.retreive().getContactName().equalsIgnoreCase(contact_to_delete.getContactName())) //n
-		{ 
-			LinkListConatact.remove();//n(n)=n^2
-			
-		}
-		else//n
-			LinkListConatact.findnext();//n
-	}
-	
-	if(LinkListConatact.retreive().getContactName().equalsIgnoreCase(contact_to_delete.getContactName()))//1
-	{
-		LinkListConatact.remove();//n
-	}
+	if(ListConatact.findkey(contact_to_delete.getContactName())) //n
+		ListConatact.removeKey(contact_to_delete.getContactName()); //n
+	return;
 		
 }
 
@@ -406,7 +279,7 @@ public void addevent() //bigO(n)   total=4n+18
 	{
 		System.out.print("Enter contact's name: ");//1
 		String cname = 	input.nextLine();//1
-		Contact cc = searcbyname(cname);//n
+		Contact cc = ListConatact.search_name(cname);//n
 		if(cc == null) //1
 		{
 			System.out.println("no contact found with this name");//1
@@ -424,7 +297,7 @@ public void addevent() //bigO(n)   total=4n+18
 			
 			System.out.print("Enter event location: ");//1
 			String location = 	input.nextLine();//1
-			Event e= new Event(title,date_time,location,searcbyname(cname));//1
+			Event e= new Event(title,date_time,location,ListConatact.search_name(cname));//1
 			LinkListEvent.Insert(e);//n
 			System.out.println("Event scheduled successfully! ");//1
 		}
@@ -561,40 +434,6 @@ public String extractfirst(String fullname) //    bigO(n) total=5n+5
 	
 }
 
-public void print_first(String first_name)  //bigO(n^2)  total =4n^2+4n+5
-{
-	int found = 0;//1
-	
-	LinkListConatact.findfirst();//1
-	while(!LinkListConatact.last()) {//n+1  
-		
-		if(extractfirst(LinkListConatact.retreive().getContactName()).equalsIgnoreCase(first_name))//n*(n)<-for (extractfirst) 
-		{
-			if(found == 0) { //  n^2*1 this if is used so the print will work only once
-				System.out.println("Contacts found!");//n^2*1
-				found = 1;//n^2*1
-			}
-			System.out.println(LinkListConatact.retreive().toString());//n^2*1
-			
-		}
-		
-		LinkListConatact.findnext();//n
-	}
-	
-	if(extractfirst(LinkListConatact.retreive().getContactName()).equalsIgnoreCase(first_name)) //n
-	{
-		if(found == 0) { // n*1  this if is used so the print will work only once
-			System.out.println("Contacts found!");//n*1
-			found = 1;//n*1
-		}
-		System.out.println(LinkListConatact.retreive().toString());//n*1
-	}
-	
-	if(found == 0) { //1 if found = 0 then there is no matching first name
-		System.out.println("Contacts not found!");//1
-	}
-}
-	
 	public void print_events_alpha() //bigO(n) total=3n+6
 	{
 		
@@ -616,19 +455,19 @@ public void print_first(String first_name)  //bigO(n^2)  total =4n^2+4n+5
 	
 	/*public void print_contacts()//big(n) total=3n+6
 	{
-		if(LinkListConatact.empty())//1 
+		if(ListConatact.empty())//1 
 		{
 			System.out.print("no contacts");//1
 			return;//1
 		}
-		LinkListConatact.findfirst();//1
+		ListConatact.findfirst();//1
 
-			while(!LinkListConatact.last()) //n+1
+			while(!ListConatact.last()) //n+1
 			{
-				System.out.println(LinkListConatact.retreive().toString());//n
-				LinkListConatact.findnext();//n
+				System.out.println(ListConatact.retreive().toString());//n
+				ListConatact.findnext();//n
 			}
-			System.out.println(LinkListConatact.retreive().toString());//1
+			System.out.println(ListConatact.retreive().toString());//1
 	}*/
 
 }
