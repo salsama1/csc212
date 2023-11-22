@@ -49,8 +49,17 @@ public class Event implements Comparable<Event>{
 	
 	@Override
 	public String toString() {//1+1  BigO(1)
-		return "Event Title:" + Title + "\n Date_Time:" + Date_Time + "\n Location:" + Location + "\n Contactinvolved:"
-				+ Contactsinvolved.toString();//1 for getContactName
+		String event = "Event Title:" + Title + "\n Date_Time:" + Date_Time + "\n Location:" + Location+ "\n Contactsinvolved:";
+		String contact = "";
+		Contactsinvolved.findfirst();
+		while(!Contactsinvolved.last()) {
+			contact += " " +Contactsinvolved.retreive().getContactName();//1 for getContactName
+			Contactsinvolved.findnext();
+		}
+		contact += " " +Contactsinvolved.retreive().getContactName();//1 for getContactName
+		
+		return event + contact;
+		
 		//1
 	}
 	

@@ -95,7 +95,7 @@ public void menu() //bigO(n^3)  total=N^3+3n^2+5n+60
 				+ "1. Add a contact\r\n"
 				+ "2. Search for a contact\r\n"
 				+ "3. Delete a contact\r\n"
-				+ "4. Schedule an event\r\n"
+				+ "4. Schedule an event or Appointment\r\n"
 				+ "5. Print event details\r\n"
 				+ "6. Print contacts by first name\r\n"
 				+ "7. Print all events alphabetically\r\n"
@@ -134,6 +134,7 @@ public void menu() //bigO(n^3)  total=N^3+3n^2+5n+60
 			{
 				delete(tmpcontact);//n^2
 				delete_event(tmpcontact.getContactName());//n^2
+				delete_Appointment(tmpcontact.getContactName());
 				System.out.println("contacts and their events deleted");//1
 			}
 			else //1
@@ -141,7 +142,23 @@ public void menu() //bigO(n^3)  total=N^3+3n^2+5n+60
 			break;//1
 			
 		case "4": //1
-			addevent();//n
+			System.out.println("Enter add criteria: ");//1
+			System.out.println("1. event");//1
+			System.out.println("2. Appointment");//1
+			System.out.print("Enter your choice: ");//1
+			String choicee = input.nextLine();//1
+			if(choicee.equals("1") ) {//1
+				addevent();
+			}
+			else if(choicee.equals("2"))//1
+			{
+				addAppointment();
+			}
+			else //1
+				{
+				System.out.println("wrong choice ");//1
+
+			}
 			break;//1
 			
 		case "5": //1
@@ -169,6 +186,7 @@ public void menu() //bigO(n^3)  total=N^3+3n^2+5n+60
 			String name =input.nextLine();//1
 
 			print_events(name, number_choice);//n
+			break;
 			
 		case "6": //1
 			if(ListConatact.empty()) //1
@@ -243,7 +261,7 @@ public void delete(Contact contact_to_delete){ //bigO(n^2)   n^2+5n+3
 }
 
 public void delete_event(String contact_to_delete){ //bigO(n^2)    total=n^2+4n+4
-
+	boolean deleted = false;
 	if(LinkListEvent.empty())//1 
 	{ // no events to delete
 		return;//1
@@ -258,14 +276,16 @@ public void delete_event(String contact_to_delete){ //bigO(n^2)    total=n^2+4n+
 			if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equals(contact_to_delete))//n
 			{
 				LinkListEvent.remove();//n*n
+				deleted = true;
+				break;
 			}
-			else {
-				LinkListEvent.retreive().getContactsinvolved().findnext();
-			}
+				LinkListEvent.retreive().getContactsinvolved().findnext();	
 		}
-		if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equals(contact_to_delete))//n
-		{
-			LinkListEvent.remove();//n*n
+		if(!deleted) {
+			if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equals(contact_to_delete))//n
+			{
+				LinkListEvent.remove();//n*n
+			}
 		}
 		LinkListEvent.findnext();//n
 	}
@@ -275,15 +295,16 @@ public void delete_event(String contact_to_delete){ //bigO(n^2)    total=n^2+4n+
 	if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equals(contact_to_delete))//n
 	{
 		LinkListEvent.remove();//n*n
+		deleted = true;
+		break;
 	}
-	else {
 		LinkListEvent.retreive().getContactsinvolved().findnext();
 	}
-	}
-
-	if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equals(contact_to_delete))//n
-	{
-	LinkListEvent.remove();//n*n
+	if(!deleted) {
+		if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equals(contact_to_delete))//n
+		{
+			LinkListEvent.remove();//n*n
+		}
 	}
 	
 }
@@ -342,9 +363,20 @@ public void addevent() //bigO(n)   total=4n+18
 				System.out.println("no contact found with this name");//1
 				return;//1
 			}
-			else //1
-			{
-				LinkListConatact.Insert(cc);
+			else {
+				LinkListConatact.Insert(cc);	
+			}
+			
+			int windex = 0;
+			while ( windex < newname.length()+1)//n+1
+			    {
+			        index++;//n
+			        windex++;//n
+			    }
+		
+		}while (newname != null && index < cname.length());
+			
+				
 				System.out.print("Enter event date and time (MM/DD/YYYY HH:MM): ");//1
 				String date_time = 	input.nextLine();//1
 				if(searchdate_time(date_time)) //n
@@ -358,15 +390,8 @@ public void addevent() //bigO(n)   total=4n+18
 				Event e= new Event(title,date_time,location,LinkListConatact);//1
 				LinkListEvent.Insert(e);//n
 				System.out.println("Event scheduled successfully! ");//1
-			}
-			int windex = 0;
-			while ( windex < newname.length()+1)//n+1
-			    {
-			        index++;//n
-			        windex++;//n
-			    }
-		
-		}while (newname != null && index < cname.length());
+			
+			
 
 
 	}
@@ -429,7 +454,7 @@ public void addAppointment() //bigO(n)   total=4n+18
 			String location = 	input.nextLine();//1
 			Appointment a= new Appointment(title,date_time,location,ListConatact.search_name(cname));//1
 			LinkListAppointment.Insert(a);//n
-			System.out.println("Event scheduled successfully! ");//1
+			System.out.println("Appointment scheduled successfully! ");//1
 		}
 
 
@@ -553,21 +578,23 @@ public void print_events(String t, int x) //bigO(n)      total=19+9n
 			
 			if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equalsIgnoreCase(t)) //n
 			{
-				if(found != 1) {
-					System.out.println("Events found!\r\n" );
-				}
+				
+				System.out.println("Events found!" );
+				
 				System.out.println(LinkListEvent.retreive().toString());//n
 				found = 1;//n
+				break;
 			}
 			LinkListEvent.retreive().getContactsinvolved().findnext();
 			}
+			if(found != 1) {
 			if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equalsIgnoreCase(t)) //n
 			{
-				if(found != 1) {
-					System.out.println("Events found!\r\n" );
-				}
+				
+				System.out.println("Events found!" );
 				System.out.println(LinkListEvent.retreive().toString());//n
 				found = 1;//n
+			}
 			}
 			LinkListEvent.findnext();//n
 		}
@@ -575,24 +602,26 @@ public void print_events(String t, int x) //bigO(n)      total=19+9n
 		LinkListEvent.retreive().getContactsinvolved().findfirst();
 		while(!LinkListEvent.retreive().getContactsinvolved().last()) {
 			
-		
 		if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equalsIgnoreCase(t)) //n
 		{
-			if(found != 1) {
-				System.out.println("Events found!\r\n" );
-			}
+			
+			System.out.println("Events found!" );
+			
 			System.out.println(LinkListEvent.retreive().toString());//n
 			found = 1;//n
+			break;
 		}
 		LinkListEvent.retreive().getContactsinvolved().findnext();
 		}
+		if(found != 1) {
 		if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equalsIgnoreCase(t)) //n
 		{
-			if(found != 1) {
-				System.out.println("Events found!\r\n" );
-			}
+			
+			System.out.println("Events found!" );
+			
 			System.out.println(LinkListEvent.retreive().toString());//n
 			found = 1;//n
+		}
 		}
 		if(found == 0)//1
 			System.out.println("no matching events found");//1
@@ -604,10 +633,8 @@ public void print_events(String t, int x) //bigO(n)      total=19+9n
 		while(!LinkListEvent.last()) //n+1
 		{
 			if(LinkListEvent.retreive().getTitle().equalsIgnoreCase(t)) //n
-			{
-				if(found != 1) {
-				System.out.println("Event found!\r\n");
-				}
+			{		
+				System.out.println("Event found!");
 				System.out.println(LinkListEvent.retreive().toString());//n
 				found = 1;//n
 			}
@@ -616,9 +643,8 @@ public void print_events(String t, int x) //bigO(n)      total=19+9n
 		
 		if(LinkListEvent.retreive().getTitle().equalsIgnoreCase(t)) //1
 		{
-			if(found != 1) {
-			System.out.println("Event found!\r\n");
-			}
+			
+			System.out.println("Event found!");
 			System.out.println(LinkListEvent.retreive().toString());//n
 			found = 1;//n
 		}
@@ -670,21 +696,6 @@ public String extractfirst(String fullname) //    bigO(n) total=5n+5
 			
 	}
 	
-	/*public void print_contacts()//big(n) total=3n+6
-	{
-		if(ListConatact.empty())//1 
-		{
-			System.out.print("no contacts");//1
-			return;//1
-		}
-		ListConatact.findfirst();//1
-
-			while(!ListConatact.last()) //n+1
-			{
-				System.out.println(ListConatact.retreive().toString());//n
-				ListConatact.findnext();//n
-			}
-			System.out.println(ListConatact.retreive().toString());//1
-	}*/
+	
 
 }
