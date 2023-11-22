@@ -1,21 +1,21 @@
 
-public class Event implements Comparable<Event>{
+public class Appointment implements Comparable<Appointment>{
 	private String Title;
 	private String Date_Time;
 	private String Location;
-	private linkedlist<Contact> Contactsinvolved;
+	private Contact Contactinvolved;
 	
 	
 	
 	
-	public Event() {
+	public Appointment() {
 		
 	}
-	public Event(String title, String date_Time, String location, linkedlist<Contact> contactsinvolved) {//4 bigO(1)
+	public Appointment(String title, String date_Time, String location, Contact contactinvolved) {//4 bigO(1)
 		Title = title;//1
 		Date_Time = date_Time;//1
 		Location = location;//1
-		Contactsinvolved = contactsinvolved;//1
+		Contactinvolved = contactinvolved;//1
 	}
 	public String getTitle() {//1 BigO(1)
 		return Title;//1
@@ -36,21 +36,21 @@ public class Event implements Comparable<Event>{
 	public void setLocation(String location) {//1 bigO(1)
 		Location = location;//1
 	}
-	public linkedlist<Contact> getContactsinvolved() {//1 bigO(1)
-		return Contactsinvolved;//1
+	public Contact getContactinvolved() {//1 bigO(1)
+		return Contactinvolved;//1
 	}
-	public void setContactinvolved(linkedlist<Contact> contactsinvolved) {//1 BigO(1)
-		Contactsinvolved = contactsinvolved;//1
+	public void setContactinvolved(Contact contactinvolved) {//1 BigO(1)
+		Contactinvolved = contactinvolved;//1
 	}
 	@Override
-	public int compareTo(Event o) {//1 bigO(1)
+	public int compareTo(Appointment o) {//1 bigO(1)
 		return Title.compareTo(o.Title);//1
 	}
 	
 	@Override
 	public String toString() {//1+1  BigO(1)
 		return "Event Title:" + Title + "\n Date_Time:" + Date_Time + "\n Location:" + Location + "\n Contactinvolved:"
-				+ Contactsinvolved.toString();//1 for getContactName
+				+ Contactinvolved.getContactName();//1 for getContactName
 		//1
 	}
 	

@@ -2,12 +2,13 @@ import java.util.*;
 public class phonebook {
 public BST ListConatact; 
 public linkedlist<Event> LinkListEvent;
-public linkedlist<Event> LinkListAppointment;
+public linkedlist<Appointment> LinkListAppointment;
 public Scanner input=new Scanner(System.in); //check
 
 public phonebook() { // big o(1) total = 2
 	ListConatact = new BST();//1
 	LinkListEvent = new linkedlist<>();//1
+	LinkListAppointment = new linkedlist<>();
 }
 
 
@@ -252,26 +253,155 @@ public void delete_event(String contact_to_delete){ //bigO(n^2)    total=n^2+4n+
 	
 	while(!LinkListEvent.last()) //n
 	{ // events to delete
-		if(LinkListEvent.retreive().getContactinvolved().getContactName().equals(contact_to_delete))//n
+		LinkListEvent.retreive().getContactsinvolved().findfirst();
+		while(!LinkListEvent.retreive().getContactsinvolved().last()) {
+			if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equals(contact_to_delete))//n
+			{
+				LinkListEvent.remove();//n*n
+			}
+			else {
+				LinkListEvent.retreive().getContactsinvolved().findnext();
+			}
+		}
+		if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equals(contact_to_delete))//n
 		{
 			LinkListEvent.remove();//n*n
 		}
-		else//n
-			LinkListEvent.findnext();//n
+		LinkListEvent.findnext();//n
 	}
-	if(LinkListEvent.retreive().getContactinvolved().getContactName().equals(contact_to_delete))//1
-		LinkListEvent.remove();//n
+	
+	LinkListEvent.retreive().getContactsinvolved().findfirst();
+	while(!LinkListEvent.retreive().getContactsinvolved().last()) {
+	if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equals(contact_to_delete))//n
+	{
+		LinkListEvent.remove();//n*n
+	}
+	else {
+		LinkListEvent.retreive().getContactsinvolved().findnext();
+	}
+	}
+
+	if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equals(contact_to_delete))//n
+	{
+	LinkListEvent.remove();//n*n
+	}
+	
+}
+
+public void delete_Appointment(String contact_to_delete){ //bigO(n^2)    total=n^2+4n+4
+
+	if(LinkListAppointment.empty())//1 
+	{ // no events to delete
+		return;//1
+	}
+	
+	LinkListAppointment.findfirst();//1
+	
+	while(!LinkListAppointment.last()) //n
+	{ // events to delete
+		if(LinkListAppointment.retreive().getContactinvolved().getContactName().equals(contact_to_delete))//n
+		{
+			LinkListAppointment.remove();//n*n
+		}
+		else//n
+			LinkListAppointment.findnext();//n
+	}
+	if(LinkListAppointment.retreive().getContactinvolved().getContactName().equals(contact_to_delete))//1
+		LinkListAppointment.remove();//n
 }
 
 
 public void addevent() //bigO(n)   total=4n+18
 {
+	String newname;
+	int index = 0;
+	linkedlist<Contact> LinkListConatact = new linkedlist<>();
+	
 	System.out.print("enter event title: ");//1
 	String title = 	input.nextLine();//1
 	
 	if(searchevent(title)) //n
 	{
 		System.out.println("Event title exists: ");//1
+		return;//1
+	}
+	
+	else//1 
+	{
+		System.out.print("Enter contact's name spreated by comma: ");//1
+		String cname = 	input.nextLine();//1
+		
+		do {
+			newname = extractnames(cname, index);
+			System.out.println("hello");
+
+			System.out.println(newname);
+			Contact cc = ListConatact.search_name(newname);//n
+			if(cc == null) //1
+			{
+				System.out.println("no contact found with this name");//1
+				return;//1
+			}
+			else //1
+			{
+				LinkListConatact.Insert(cc);
+				System.out.print("Enter event date and time (MM/DD/YYYY HH:MM): ");//1
+				String date_time = 	input.nextLine();//1
+				if(searchdate_time(date_time)) //n
+				{
+					System.out.println("date and time title exists");//1
+					return ;//1
+				}
+			
+				System.out.print("Enter event location: ");//1
+				String location = 	input.nextLine();//1
+				Event e= new Event(title,date_time,location,LinkListConatact);//1
+				LinkListEvent.Insert(e);//n
+				System.out.println("Event scheduled successfully! ");//1
+			}
+			int windex = 0;
+			while ( windex < newname.length()+1)//n+1
+			    {
+			        index++;//n
+			        windex++;//n
+			    }
+		
+		}while (newname != null && index < cname.length());
+
+
+	}
+	
+}
+
+public String extractnames(String namelist, int index) {
+	
+    char currentChar = namelist.charAt(index);//1
+    String fullname = "";//1
+	System.out.println("hello");
+
+
+    while (currentChar != ',' && index < namelist.length())//n+1
+    {
+    	fullname += currentChar;//n
+        index++;//n
+        if (index < namelist.length())//n
+        {
+            currentChar = namelist.charAt(index);//n
+        }
+    }
+
+    return fullname;//1
+	
+}
+
+public void addAppointment() //bigO(n)   total=4n+18
+{
+	System.out.print("enter Appointment title: ");//1
+	String title = 	input.nextLine();//1
+	
+	if(searchAppointment(title)) //n
+	{
+		System.out.println("Appointment title exists: ");//1
 		return;//1
 	}
 	
@@ -287,18 +417,18 @@ public void addevent() //bigO(n)   total=4n+18
 		}
 		else //1
 		{
-			System.out.print("Enter event date and time (MM/DD/YYYY HH:MM): ");//1
+			System.out.print("Enter Appointment date and time (MM/DD/YYYY HH:MM): ");//1
 			String date_time = 	input.nextLine();//1
-			if(searchdate_time(date_time)) //n
+			if(searchdate_time_A(date_time)) //n
 			{
 				System.out.println("date and time title exists");//1
 				return ;//1
 			}
 			
-			System.out.print("Enter event location: ");//1
+			System.out.print("Enter Appointment location: ");//1
 			String location = 	input.nextLine();//1
-			Event e= new Event(title,date_time,location,ListConatact.search_name(cname));//1
-			LinkListEvent.Insert(e);//n
+			Appointment a= new Appointment(title,date_time,location,ListConatact.search_name(cname));//1
+			LinkListAppointment.Insert(a);//n
 			System.out.println("Event scheduled successfully! ");//1
 		}
 
@@ -307,6 +437,29 @@ public void addevent() //bigO(n)   total=4n+18
 	
 }
 
+public boolean searchAppointment(String title) //bigO(n) total=3n+8
+{
+	
+		if(LinkListAppointment.empty()) //1
+		{
+			return false;//1
+		}
+		
+		LinkListAppointment.findfirst();//1
+		
+		while(!LinkListAppointment.last())//n+1
+		{
+			if((LinkListAppointment.retreive()).getTitle().equalsIgnoreCase(title))//n
+				return true;//1
+			LinkListAppointment.findnext();//n
+			}
+		
+		if(LinkListAppointment.retreive().getTitle().equalsIgnoreCase(title))//1 // for last case
+			return true;//1
+		
+		return false;//1
+	
+}
 
 public boolean searchevent(String title) //bigO(n) total=3n+8
 {
@@ -330,6 +483,30 @@ public boolean searchevent(String title) //bigO(n) total=3n+8
 		
 		return false;//1
 	
+}
+
+public boolean searchdate_time_A(String Date_Time)//bigO(n)  total=3n+8  
+{
+
+if(LinkListAppointment.empty()) //1
+{
+	return false;//1
+}
+
+LinkListAppointment.findfirst();//1
+
+while(!LinkListAppointment.last())//n+1 
+{
+	if((LinkListAppointment.retreive()).getDate_Time().equalsIgnoreCase(Date_Time))//n
+		return true;//1
+	LinkListAppointment.findnext();//n
+	}
+
+if(LinkListAppointment.retreive().getDate_Time().equalsIgnoreCase(Date_Time)) //1 for last case
+	return true;//1
+
+return false;//1
+
 }
 
 public boolean searchdate_time(String Date_Time)//bigO(n)  total=3n+8  
@@ -370,21 +547,55 @@ public void print_events(String t, int x) //bigO(n)      total=19+9n
 		LinkListEvent.findfirst();//1
 		while(!LinkListEvent.last()) //n+1
 		{
-			if(LinkListEvent.retreive().getContactinvolved().getContactName().equalsIgnoreCase(t)) //n
+			LinkListEvent.retreive().getContactsinvolved().findfirst();
+			while(!LinkListEvent.retreive().getContactsinvolved().last()) {
+				
+			
+			if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equalsIgnoreCase(t)) //n
 			{
-				System.out.println("Events found!\r\n" + LinkListEvent.retreive().toString());//n
+				if(found != 1) {
+					System.out.println("Events found!\r\n" );
+				}
+				System.out.println(LinkListEvent.retreive().toString());//n
+				found = 1;//n
+			}
+			LinkListEvent.retreive().getContactsinvolved().findnext();
+			}
+			if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equalsIgnoreCase(t)) //n
+			{
+				if(found != 1) {
+					System.out.println("Events found!\r\n" );
+				}
+				System.out.println(LinkListEvent.retreive().toString());//n
 				found = 1;//n
 			}
 			LinkListEvent.findnext();//n
 		}
+				
+		LinkListEvent.retreive().getContactsinvolved().findfirst();
+		while(!LinkListEvent.retreive().getContactsinvolved().last()) {
+			
 		
-		if(LinkListEvent.retreive().getContactinvolved().getContactName().equalsIgnoreCase(t))//1 
-		{ 
-			System.out.println("Events found!\r\n" + LinkListEvent.retreive().toString());//1
-			found = 1;//1
+		if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equalsIgnoreCase(t)) //n
+		{
+			if(found != 1) {
+				System.out.println("Events found!\r\n" );
+			}
+			System.out.println(LinkListEvent.retreive().toString());//n
+			found = 1;//n
+		}
+		LinkListEvent.retreive().getContactsinvolved().findnext();
+		}
+		if(LinkListEvent.retreive().getContactsinvolved().retreive().getContactName().equalsIgnoreCase(t)) //n
+		{
+			if(found != 1) {
+				System.out.println("Events found!\r\n" );
+			}
+			System.out.println(LinkListEvent.retreive().toString());//n
+			found = 1;//n
 		}
 		if(found == 0)//1
-			System.out.println("no matching event found");//1
+			System.out.println("no matching events found");//1
 	}
 	
 	else //1
@@ -394,7 +605,10 @@ public void print_events(String t, int x) //bigO(n)      total=19+9n
 		{
 			if(LinkListEvent.retreive().getTitle().equalsIgnoreCase(t)) //n
 			{
-				System.out.println("Event found!\r\n" + LinkListEvent.retreive().toString());//n
+				if(found != 1) {
+				System.out.println("Event found!\r\n");
+				}
+				System.out.println(LinkListEvent.retreive().toString());//n
 				found = 1;//n
 			}
 			LinkListEvent.findnext();//n
@@ -402,8 +616,11 @@ public void print_events(String t, int x) //bigO(n)      total=19+9n
 		
 		if(LinkListEvent.retreive().getTitle().equalsIgnoreCase(t)) //1
 		{
-			System.out.println("Event found!\r\n" + LinkListEvent.retreive().toString());//1
-			found = 1;//1
+			if(found != 1) {
+			System.out.println("Event found!\r\n");
+			}
+			System.out.println(LinkListEvent.retreive().toString());//n
+			found = 1;//n
 		}
 		if(found == 0)//1
 			System.out.println("no matching events found");//1
