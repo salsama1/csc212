@@ -354,9 +354,7 @@ public void addevent() //bigO(n)   total=4n+18
 		
 		do {
 			newname = extractnames(cname, index);
-			System.out.println("hello");
 
-			System.out.println(newname);
 			Contact cc = ListConatact.search_name(newname);//n
 			if(cc == null) //1
 			{
@@ -402,7 +400,6 @@ public String extractnames(String namelist, int index) {
 	
     char currentChar = namelist.charAt(index);//1
     String fullname = "";//1
-	System.out.println("hello");
 
 
     while (currentChar != ',' && index < namelist.length())//n+1
