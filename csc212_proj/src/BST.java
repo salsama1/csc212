@@ -1,9 +1,8 @@
-import java.util.Scanner;
 
 public class BST {
 BSTNode root, current;
-boolean found;
-public Scanner input=new Scanner(System.in); //check
+ boolean found;
+ Contact found_phone;
 
 
     public BST() {
@@ -46,7 +45,6 @@ public Scanner input=new Scanner(System.in); //check
 
     public void insert(Contact c) {
         root = insertRec(root, c.getContactName() ,c);
-        System.out.print(root.getData().getContactName());
     }
 
     // A recursive function to insert a new key and data into the BST
@@ -101,26 +99,49 @@ public Scanner input=new Scanner(System.in); //check
     public Contact search_phone(String num)  { 
     	int x = 0;
     	return inorder(num, x);
+    	
     }
     
     public void search_email(String email) {
     	int x = 1;
     	inorder(email, x);
+    	if(found) {
+			System.out.println("Contacts found");
+    	}
+    	else
+    		System.out.println("there is no contact with this email : "+ email);//1
     }
     
     public void search_address(String address) {
     	int x = 2;
     	inorder(address, x);
+    	if(found) {
+			System.out.println("Contacts found");
+    	}
+    	else
+    		System.out.println("there is no contact with this address : "+ address);//1
     }
     
     public void search_birthday(String birthday) {
     	int x = 3;
     	inorder(birthday, x);
+    	if(found) {
+			System.out.println("Contacts found");
+    	}
+    	else
+    		System.out.println("there is no contact with this phbirthday : "+ birthday);//1
     }
     
-    private Contact inorder(String data, int x) { 
-    	if(x == 0)
-    		return inorder_phone(root, data); 
+    private Contact inorder(String data, int x) {
+    	found = false;
+    	if(x == 0) {
+    		inorder_phone(root, data); 
+    		if(found) 
+    			return found_phone;
+    		else
+    			return null;
+    		}
+    		
     	else {
     		inorder_Recursive(root, data, x);
     		return null;
@@ -128,64 +149,55 @@ public Scanner input=new Scanner(System.in); //check
     	
     } 
     
-    private Contact inorder_phone(BSTNode root, String data) { 
+    private void inorder_phone(BSTNode root, String data) { 
     		if (root != null) { 
     			inorder_phone(root.left, data); 
-    			if(data.compareTo(root.getData().getPhoneNumber()) == 0 ) {
-    				return root.getData();
+    			if(data.equalsIgnoreCase(root.getData().getPhoneNumber())) {
+    				found_phone = root.getData();
+    				found = true;
     			}
     			inorder_phone(root.right, data); 
     		} 
-    		return null;
     	}
     // recursively traverse the BST  
     private void inorder_Recursive(BSTNode root, String data, int select) { 
-    	found = false;
     	
     	switch(select) {
     	case 1:
     		if (root != null) { 
     			inorder_Recursive(root.left, data, select); 
-    			if(data.compareTo(root.getData().getEmailAddress()) == 0 ) {
+    			if(data.equalsIgnoreCase(root.getData().getEmailAddress())) {
     				System.out.println(root.getData().toString());
-    				if(!found) {
-    					System.out.println("Contacts found");
-    				}
     				found = true;
     			}
     			inorder_Recursive(root.right, data, select); 
     		} 
+    		break;
     		
     	case 2:
     		if (root != null) { 
     			inorder_Recursive(root.left, data, select); 
-    			if(data.compareTo(root.getData().getAddress()) == 0 ) {
+    			if(data.equalsIgnoreCase(root.getData().getAddress())) {
     				System.out.println(root.getData().toString());
-    				if(!found) {
-    					System.out.println("Contacts found");
-    				}
-    				found = true;
-    			}
-    			inorder_Recursive(root.right, data, select); 
-    		} 
-    		
-    	case 3:
-    		if (root != null) { 
-    			inorder_Recursive(root.left, data, select); 
-    			if(data.compareTo(root.getData().getBirthday()) == 0 ) {
-    				System.out.println(root.getData().toString());
-    				if(!found) {
-    					System.out.println("Contacts found");
-    				}
     				found = true;
     			}
     			inorder_Recursive(root.right, data, select); 
     		}
+    		break;
+    		
+    	case 3:
+    		if (root != null) { 
+    			inorder_Recursive(root.left, data, select); 
+    			if(data.equalsIgnoreCase(root.getData().getBirthday())) {
+    				System.out.println(root.getData().toString());
+    				found = true;
+    			}
+    			inorder_Recursive(root.right, data, select); 
+    		}
+    		break;
     		
     	}
-    	if(!found) {
-    		System.out.println("there is no email with this :"+data);//1
-    	}
+    	
     } 
     
     public String extractfirst(String fullname) //    bigO(n) total=5n+5
@@ -276,5 +288,18 @@ public Scanner input=new Scanner(System.in); //check
     	}
     	return false;
     }
+    
+    public void print_all()  { 
+    	print_rec_all(root);
+    	
+    }
+   
+    private void print_rec_all(BSTNode root)  {
+    	if (root != null) { 
+    		print_rec_all(root.left); 
+    		System.out.print(root.data.toString() + " "); 
+    		print_rec_all(root.right); 
+		}
+    } 
     
 }
