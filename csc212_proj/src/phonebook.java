@@ -398,8 +398,17 @@ public void addevent() //bigO(n)   total=4n+18
 		}while (newname != null && index < cname.length());
 			
 				
-				System.out.print("Enter event date and time (MM/DD/YYYY HH:MM): ");//1
+				System.out.print("Enter event date and time (DD/MM/YYYY HH:MM): ");//1
 				String date_time = 	input.nextLine();//1
+				try {
+				if(!validateDate(date_time)) {
+					System.out.println("Date and time are invalid.");
+					return;
+				}
+				}catch (Exception e) {
+				    System.out.println("The format does not match");
+				    return;
+				}
 				if(searchdate_time(date_time)) //n
 				{
 					System.out.println("date and time title exists");//1
@@ -462,8 +471,17 @@ public void addAppointment() //bigO(n)   total=4n+18
 		}
 		else //1
 		{
-			System.out.print("Enter Appointment date and time (MM/DD/YYYY HH:MM): ");//1
+			System.out.print("Enter Appointment date and time (DD/MM/YYYY HH:MM): ");//1
 			String date_time = 	input.nextLine();//1
+			try {
+			if(!validateDate(date_time)) {
+				System.out.println("Date and time are invalid.");
+				return;
+			}
+			}catch (Exception e) {
+			    System.out.println("The format does not match");
+			    return;
+			}
 			if(searchdate_time_A(date_time)) //n
 			{
 				System.out.println("date and time title exists");//1
@@ -482,53 +500,7 @@ public void addAppointment() //bigO(n)   total=4n+18
 	
 }
 
-/*public boolean searchAppointment(String title) //bigO(n) total=3n+8
-{
-	
-		if(LinkListAppointment.empty()) //1
-		{
-			return false;//1
-		}
-		
-		LinkListAppointment.findfirst();//1
-		
-		while(!LinkListAppointment.last())//n+1
-		{
-			if((LinkListAppointment.retreive()).getTitle().equalsIgnoreCase(title))//n
-				return true;//1
-			LinkListAppointment.findnext();//n
-			}
-		
-		if(LinkListAppointment.retreive().getTitle().equalsIgnoreCase(title))//1 // for last case
-			return true;//1
-		
-		return false;//1
-	
-}*/
 
-/*public boolean searchevent(String title) //bigO(n) total=3n+8
-{
-	
-		if(LinkListEvent.empty()) //1
-		{
-			return false;//1
-		}
-		
-		LinkListEvent.findfirst();//1
-		
-		while(!LinkListEvent.last())//n+1
-		{
-			if((LinkListEvent.retreive()).getTitle().equalsIgnoreCase(title))//n
-				return true;//1
-			LinkListEvent.findnext();//n
-			}
-		
-		if(LinkListEvent.retreive().getTitle().equalsIgnoreCase(title))//1 // for last case
-			return true;//1
-		
-		return false;//1
-	
-}*/
 
 public boolean searchdate_time_A(String Date_Time)//bigO(n)  total=3n+8  
 {
@@ -803,7 +775,47 @@ public String extractfirst(String fullname) //    bigO(n) total=5n+5
 		
 	}
 
+
 	
+
+	  public boolean validateDate(String date) {
+	        int day = Integer.parseInt(date.substring(0, 2));
+	        int month = Integer.parseInt(date.substring(3, 5));
+	        int year = Integer.parseInt(date.substring(6, 10));
+	        int hour = Integer.parseInt(date.substring(11, 13));
+	        int minute = Integer.parseInt(date.substring(14, 16));
+
+	        if (date.length() != 16 || date.charAt(2)!= '/' || date.charAt(5) != '/' || date.charAt(10)!=' ' || date.charAt(13)!=':') {
+	            return false;
+	        }
+
+	        if (day < 1 || day > 31) {
+	            return false;
+	        }
+
+	        if (month < 1  || month > 12) {
+	            return false;
+	        }
+
+
+	        if (year < 1900 || year > 2100) {
+	            return false;
+	        }
+	        if (hour < 0 || hour > 23) {
+	            return false;
+	        }
+
+	        if (minute < 0 || minute > 59) {
+	            return false;}
+
+
+	        if (month == 2 && day == 29 && year % 4 != 0) {
+	            return false;
+	        }
+
+	        return true;
+	    }
+
 	
 
 }
