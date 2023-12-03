@@ -1,32 +1,27 @@
-public class linkedlist <T extends Comparable<T>> implements list <T>{
+public class linkedlist <T extends Comparable<T>> {
 public Node<T> head;
 public Node<T> current;
 public linkedlist() {//1 bigO(1)
 	head=current=null;//1
 }
-@Override
 public void findfirst() {//1  bigO(1)
 	current=head;//1
 	
 }
-@Override
 public void findnext() {//1 bigO(1)
 	current=current.next;//1
 	
 }
-@Override
 public T retreive() {//1 bigO(1)
 	
 	return current.data;//1
 }
-@Override
 public void update(T e) {//1 bigO(1)
 	current.data=e;//1
 	
 }
 
 
-@Override
 public void remove() {//2n+10 bigO(n)
 	if(head==current)//1 
 		{head=head.next;//1
@@ -44,15 +39,12 @@ public void remove() {//2n+10 bigO(n)
 	else//1
 		current=current.next;//1
 }
-@Override
 public boolean full() {//1 bigO(1)
 	return false;//1
 }
-@Override
 public boolean last() {//1 BigO(1)
 	return current.next==null;//1
 }
-@Override
 public boolean empty() {//1 BigO(1)
 	return head==null;//1
 }

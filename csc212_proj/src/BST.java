@@ -289,17 +289,6 @@ BSTNode root, current;
     	return false;
     }
     
-    public void print_all()  { 
-    	print_rec_all(root);
-    	
-    }
-   
-    private void print_rec_all(BSTNode root)  {
-    	if (root != null) { 
-    		print_rec_all(root.left); 
-    		System.out.print(root.data.toString() + " "); 
-    		print_rec_all(root.right); 
-		}
-    } 
+    
     
 }
